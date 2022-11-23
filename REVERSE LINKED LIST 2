@@ -79,3 +79,93 @@ public:
 };
 
 ***************************************************************************************APPROACH 2****************************************************
+
+
+ListNode *reverse(ListNode *head){
+    
+     if(!head||!head->next) return head;
+    
+    ListNode *newHead=reverse(head->next);
+     
+       ListNode *temp=head->next;
+        
+          temp->next=head;
+    
+          head->next=NULL;
+    
+          return newHead;
+}
+
+
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        
+     
+       
+        if(!head||!head->next) return head;
+        
+        if(left==right) return head;
+        
+          // if(left==1&&right==length(head)) return reverse(head);
+        
+            ListNode *temp1=head;
+            ListNode *prev=NULL;
+          
+           for(int i=0;i<left-1;i++){
+                 prev=temp1;
+               temp1=temp1->next;
+           }
+       
+         // cout<<temp1->val<<endl;
+               
+            ListNode *temp2=temp1;
+               
+         for(int i=0;i<(right-left);i++){
+            
+             temp2=temp2->next;
+             
+         }
+        
+          // cout<<temp2->val<<endl;
+        
+          ListNode *front=temp2->next;
+        
+           //BREAK THE LIST
+            temp2->next=NULL;
+        
+           //REVERSE THE LIST
+        ListNode *RL=reverse(temp1);
+        
+          if(prev==NULL&&front==NULL) return RL;
+        
+          if(prev==NULL&&front!=NULL){
+              
+                ListNode *last=RL;
+          
+             //MOVE LAST TO THE LAST OF THE REVERSE LIST
+              while(last->next!=NULL) last=last->next;
+              
+               last->next=front;
+              
+              return RL;
+          } 
+      
+           
+                ListNode *last=RL;
+          
+             //MOVE LAST TO THE LAST OF THE REVERSE LIST
+             while(last->next!=NULL) last=last->next;
+        
+           //ATTACH NEW REVERSE TO PREV NEXT
+        
+        
+             prev->next=RL;
+        
+          //ATTACH LAST NEXT TO FRONT
+      
+           last->next=front;
+        
+             return head;
+    }
+};
