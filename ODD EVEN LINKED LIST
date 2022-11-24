@@ -1,0 +1,202 @@
+Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list.
+
+The first node is considered odd, and the second node is even, and so on.
+
+Note that the relative order inside both the even and odd groups should remain as it was in the input.
+
+You must solve the problem in O(1) extra space complexity and O(n) time complexity.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5]
+Output: [1,3,5,2,4]
+Example 2:
+
+
+Input: head = [2,1,3,5,6,4,7]
+Output: [2,3,6,7,1,5,4]
+ 
+
+Constraints:
+
+The number of nodes in the linked list is in the range [0, 104].
+-106 <= Node.val <= 106
+
+***********************************************************************************APPROACH 1****************************************************************
+
+//USING EXTRA SPACE
+
+// LINKED LIST ->[1,2,3,4,5,6,7]
+// INDEX     ->  [1,2,3,4,5,6,7]
+
+//ANS       ->   [1,3,5,7,2,4,6]
+
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        
+        if(!head) return NULL;
+        
+        //MAKE A VECTOR AND STORE ALL THE VALUES IN IT
+        
+        vector<int> ans;
+        
+        ListNode *temp=head;
+        
+         while(temp!=NULL){
+             ans.push_back(temp->val);
+             temp=temp->next;
+         }
+        
+              ListNode *oddHead=NULL;
+              ListNode *oddTail=NULL;
+        
+             ListNode *evenHead=NULL;
+             ListNode *evenTail=NULL;
+        
+        for(int i=1;i<=ans.size();i++){
+            
+            if(i%2==0){
+                
+                ListNode *newNode=new ListNode(ans[i-1]);
+                
+                if(evenHead==NULL){
+                    
+                    evenHead=newNode;
+                    evenTail=newNode;
+                }
+                
+                else{
+                    evenTail->next=newNode;
+                    evenTail=newNode;
+                }
+                
+            }
+            
+            else{
+                
+                ListNode *newNode=new ListNode(ans[i-1]);
+                
+                  if(oddHead==NULL){
+                    
+                    oddHead=newNode;
+                    oddTail=newNode;
+                }
+                
+                else{
+                    oddTail->next=newNode;
+                    oddTail=newNode;
+                }
+                
+            }
+                
+                
+            }
+            
+            if(oddHead==NULL) {
+                evenTail->next=NULL;
+                return evenHead;
+            }
+            
+            if(evenHead==NULL){
+                oddTail->next=NULL;
+                return oddHead;
+            }
+            
+            oddTail->next=evenHead;
+            
+            evenTail->next=NULL;
+            
+            return oddHead;
+        
+        }
+        
+        
+    
+};
+
+//******************************************************************APPROACH 2************************************************************************************
+
+//WITHOUT USING EXTRA SPACE
+
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        
+        if(!head) return NULL;
+    
+               ListNode *temp=head;
+      
+        
+              ListNode *oddHead=NULL;
+              ListNode *oddTail=NULL;
+        
+             ListNode *evenHead=NULL;
+             ListNode *evenTail=NULL;
+        
+              int i=1;
+        
+             while(temp){
+            
+            if(i%2==0){
+                
+                ListNode *newNode=new ListNode(temp->val);
+                
+                if(evenHead==NULL){
+                    
+                    evenHead=newNode;
+                    evenTail=newNode;
+                }
+                
+                else{
+                    evenTail->next=newNode;
+                    evenTail=newNode;
+                }
+                
+            }
+            
+            else{
+                
+                ListNode *newNode=new ListNode(temp->val);
+                
+                  if(oddHead==NULL){
+                    
+                    oddHead=newNode;
+                    oddTail=newNode;
+                 }
+                
+                else{
+                    oddTail->next=newNode;
+                    oddTail=newNode;
+                }
+                
+            }
+             
+            temp=temp->next;
+               i++; 
+            }
+            
+            if(oddHead==NULL) {
+                evenTail->next=NULL;
+                return evenHead;
+            }
+            
+            if(evenHead==NULL){
+                oddTail->next=NULL;
+                return oddHead;
+            }
+            
+            oddTail->next=evenHead;
+            
+            evenTail->next=NULL;
+            
+            return oddHead;
+        
+        }
+        
+        
+    
+};
