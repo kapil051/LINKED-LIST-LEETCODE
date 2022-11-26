@@ -1,0 +1,126 @@
+You are given the head of a linked list with n nodes.
+
+For each node in the list, find the value of the next greater node. That is, for each node, find the value of the first node that is next to it and has a strictly larger value than it.
+
+Return an integer array answer where answer[i] is the value of the next greater node of the ith node (1-indexed). If the ith node does not have a next greater node, set answer[i] = 0.
+
+ 
+
+Example 1:
+
+
+Input: head = [2,1,5]
+Output: [5,5,0]
+Example 2:
+
+
+Input: head = [2,7,4,3,5]
+Output: [7,0,5,5,0]
+ 
+
+Constraints:
+
+The number of nodes in the list is n.
+1 <= n <= 104
+1 <= Node.val <= 109
+
+//************************************************************************APPROACH1 USING TWO LOOPS*****************************************************************
+
+// class Solution {
+// public:
+//     vector<int> nextLargerNodes(ListNode* head) {
+        
+//            vector<int> ans;
+        
+//         ListNode *temp1=head;
+        
+//         while(temp1){
+            
+//              ListNode *temp2=temp1->next;
+             
+//               bool flag=false;
+            
+//             while(temp2){
+                
+//                 if(temp2->val>temp1->val){
+//                     ans.push_back(temp2->val);
+//                      flag=true;
+//                       break;
+//                 }
+                
+//                 temp2=temp2->next;
+//             }
+            
+//             if(!flag) ans.push_back(0);
+            
+//            temp1=temp1->next; 
+//         }
+       
+//         return ans;
+//     }
+// };
+
+**********************************************************************APPROACH2************************************************************************************
+
+class Solution {
+public:
+    
+    ListNode *reverseNode(ListNode *head){
+    
+         if(!head||!head->next) return head;
+        
+        ListNode *newHead=reverseNode(head->next);
+        
+        ListNode *temp=head->next;
+        
+          head->next=NULL;
+        
+        temp->next=head;
+        
+        return newHead;
+    }
+    
+    vector<int> nextLargerNodes(ListNode* head) {
+        
+         //USING STACK
+        //1. RVERSE THE LINKED LIST
+        //2. IF STACK IS EMPTY PUSH 0 IN VECTOR
+        //   PUSH ELEMENT IN TO STACK AND MOVE TEMP IN LINKED LIST
+        //3. IF TOP OF STACK GREAER THAN NODE VAL PUSH TOP YO THE VECTOR
+        //4. ELSE POP THE ELEMENT FROM THE STACK AND DO NOT MOVE IN THE LINKED LIST
+        
+           vector<int> ans;
+        
+        ListNode *newHead=reverseNode(head);
+        
+        stack<int> st;
+        
+        ListNode *temp=newHead;
+        
+        while(temp){
+            
+            if(st.size()==0){
+                ans.push_back(0);
+                st.push(temp->val);
+                temp=temp->next;
+            }
+            
+            else if(st.top()>temp->val){
+                
+                ans.push_back(st.top());
+                st.push(temp->val);
+                temp=temp->next;
+            }
+            
+            else{
+    
+                    st.pop();        
+            }
+            
+        }
+        
+        reverse(ans.begin(),ans.end());
+        
+      return ans;  
+    }
+};
