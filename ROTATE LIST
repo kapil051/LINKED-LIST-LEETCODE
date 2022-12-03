@@ -1,0 +1,106 @@
+Given the head of a linked list, rotate the list to the right by k places.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+Example 2:
+
+
+Input: head = [0,1,2], k = 4
+Output: [2,0,1]
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 500].
+-100 <= Node.val <= 100
+0 <= k <= 2 * 109
+
+******************************************************************USING REVERSE********************************************************
+
+class Solution {
+public:
+    
+    ListNode *reverse(ListNode *head){
+        
+        if(!head||!head->next) return head;
+        
+        
+        ListNode *newHead=reverse(head->next);
+        
+          ListNode *temp=head->next;
+        
+          temp->next=head;
+     
+          head->next=NULL;
+        
+          return newHead;
+    }
+    
+    
+    int findLength(ListNode *head){
+        
+        ListNode *temp=head;
+        
+          int size=0;
+        
+        while(temp){
+            size++;
+            temp=temp->next;
+        }
+        
+        return size;
+    }
+    
+    
+    ListNode* rotateRight(ListNode* head, int k) {
+        
+           if(!head) return head;
+        
+          if(k==0) return head;
+
+         int length=findLength(head);
+        
+        if(k==length) return head;
+    
+            k=k%length;
+        
+         if(k==0) return head;
+        
+      
+        ListNode *h1=reverse(head);
+        
+      
+          ListNode *t1=h1;
+        
+        for(int i=0;i<k-1;i++){
+            t1=t1->next;
+        }
+        
+          cout<<t1->val<<endl;
+        
+         ListNode *t2=t1->next;
+        
+          t1->next=NULL;
+          
+        ListNode *h2=reverse(h1);
+        
+        ListNode *h3=reverse(t2);
+        
+        ListNode *temp=h2;
+        
+          while(temp->next!=NULL){
+              temp=temp->next;
+          }
+        
+        
+        temp->next=h3;
+        
+        
+       return h2; 
+    }
+};
