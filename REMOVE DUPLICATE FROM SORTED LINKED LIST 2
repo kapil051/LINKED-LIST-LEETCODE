@@ -1,0 +1,80 @@
+Given the head of a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list. Return the linked list sorted as well.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,3,4,4,5]
+Output: [1,2,5]
+Example 2:
+
+
+Input: head = [1,1,1,2,3]
+Output: [2,3]
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 300].
+-100 <= Node.val <= 100
+The list is guaranteed to be sorted in ascending order.
+
+
+****************************************************************APRROCAH**SKIIPING THE NODES*********************************************************
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        
+        if(!head||!head->next) return head;
+        
+         ListNode *fh=NULL;
+         ListNode *ft=NULL;
+        
+         ListNode *temp=head;
+        
+        while(temp){
+            
+            //IF NODE IS NOT DUPLICATE THEN ADD IT TO THE NEW LINKED LIST
+            
+            if(temp->next==NULL||temp->val!=temp->next->val){
+                
+                if(fh==NULL){
+                    fh=temp;
+                    ft=temp;
+                }
+                
+                else{
+
+                  ft->next=temp;   
+                   ft=temp;                  
+                }
+                
+                 temp=temp->next;
+            }
+            
+            //SKIP THE NODES IF THEY ARE DUPLICATE
+            
+             else{
+                   ListNode *move=temp;
+               
+                   int data=temp->val;
+                 
+                 while(move!=NULL&&move->val==data){
+                     move=move->next;
+                 }
+             
+                  temp=move;
+             }
+             
+        }
+        
+        //TERMINATE THE TAIL OF THE LINKED LIST
+        
+        if(ft)
+           ft->next=NULL;
+        
+      return fh;  
+    }
+};
