@@ -1,0 +1,177 @@
+You are given the head of a singly linked-list. The list can be represented as:
+
+L0 → L1 → … → Ln - 1 → Ln
+Reorder the list to be on the following form:
+
+L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4]
+Output: [1,4,2,3]
+Example 2:
+
+
+Input: head = [1,2,3,4,5]
+Output: [1,5,2,4,3]
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [1, 5 * 104].
+1 <= Node.val <= 1000
+
+//*****************************************APPROACH1 RECURSION*************************************************************************************
+
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        
+        //size==0||size==1||size==2 
+        
+        if(!head||!head->next||!head->next->next) {
+           
+               return;
+        }
+        
+        //1 2 3 4
+        
+         //FIRST=1 LAST=4 PREVLAST=3 CALL=2
+        
+          // 1->4->2->3->NULL
+        
+          ListNode *first=head;
+          ListNode *last=head;
+        
+           ListNode *prevLast=NULL;
+        
+          while(last->next!=NULL){
+              
+                 prevLast=last;
+                last=last->next;
+          } 
+        
+          ListNode *call=head->next;
+         
+          first->next=last;
+        
+          last->next=call;
+         
+          prevLast->next=NULL;
+        
+        //RECURSIVE CALL
+        
+          reorderList(call);
+        
+    }
+};
+
+//**************************************************APPROACH2 REVERSE THE SECOND HALF******************************************************************************
+
+class Solution {
+public:
+    
+    ListNode *findMid(ListNode *head){
+        
+        if(!head||!head->next) return head;
+        
+        ListNode *slow=head;
+        ListNode *fast=head;
+        
+        while(fast!=NULL&&fast->next!=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+      
+        return slow;
+    }
+    
+    ListNode *reverse(ListNode *head){
+        
+        if(!head||!head->next) return head;
+        
+        ListNode *newHead=reverse(head->next);
+        
+         ListNode *temp=head->next;
+        
+          temp->next=head;
+        
+          head->next=NULL;
+        
+          return newHead;
+    }
+    
+    
+    void reorderList(ListNode* head) {
+        
+          if(!head||!head->next||!head->next->next) return;
+        
+            ListNode *mid=findMid(head);
+                
+               ListNode *temp=head;
+        
+             while(temp->next!=mid) temp=temp->next;
+        
+                temp->next=NULL;
+              
+           ListNode* head2=reverse(mid);
+        
+           ListNode* head1=head;
+
+        
+              head=NULL;
+        
+          ListNode *tail=NULL;
+        
+     
+    
+        while(head1&&head2){
+            
+            cout<<"head1:"<<head1->val<<" "<<"head2:"<<head2->val<<endl;
+
+             if(head==NULL){
+             
+                   head=head1;
+                   tail=head1;
+                 
+                   head1=head1->next;
+                 
+                   tail->next=head2;
+                    tail=head2;
+               
+             }
+            
+            else{
+                
+                tail->next=head1;
+               
+                 tail=head1;
+               
+                head1=head1->next;
+                
+                tail->next=head2;
+                
+                 tail=head2;
+            }
+            
+                 head2=head2->next;
+            
+        }
+        
+        if(head2){
+          
+            tail->next=head2;
+            
+              tail=head2;
+            
+        }
+        
+    
+       tail->next=NULL;
+       
+    }
+};
