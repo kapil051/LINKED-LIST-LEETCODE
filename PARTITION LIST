@@ -1,0 +1,113 @@
+Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+
+You should preserve the original relative order of the nodes in each of the two partitions.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,4,3,2,5,2], x = 3
+Output: [1,2,2,4,3,5]
+Example 2:
+
+Input: head = [2,1], x = 2
+Output: [1,2]
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 200].
+-100 <= Node.val <= 100
+-200 <= x <= 200
+
+*******************************************************MAKING TWO LIST*******************************************************************
+
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        
+        //WE NEED TO MAINTAIN ALL ELEMENT LESS THAN X FIRST 
+        //THE ALL THE ELEMENT GREATER OR EQUALS TO X
+        
+        if(!head||!head->next) return head;
+        
+        //MAKE TWO NEW LIST
+        
+        ListNode* h1=NULL;
+        ListNode* t1=NULL;
+        
+        ListNode *h2=NULL;
+        ListNode *t2=NULL;
+        
+          ListNode *temp=head;
+        
+        while(temp){
+            
+            //FILL LIST ONE WHEN ELEMENT IS LESS THAN X
+            
+            if(temp->val<x){
+                
+                if(h1==NULL){
+                    h1=temp;
+                    t1=temp;
+                }
+                
+                else{
+                    t1->next=temp;
+                    t1=temp;
+                }
+                
+                
+            }
+            
+            //FILL LIST 2 WHEN ELEMENT IS MORE THAN X
+            
+            else{
+                
+                  if(h2==NULL){
+                    h2=temp;
+                    t2=temp;
+                }
+                
+                else{
+                    t2->next=temp;
+                    t2=temp;
+                }
+                
+            }
+            
+            //MOVE IN THE ORIGIONAL LIST
+            
+            temp=temp->next;
+        }
+        
+        //CHECK IF GENRATED LIST 1 IS EMPTY
+        
+        if(!h1){
+            t2->next=NULL;
+            return h2;
+        }
+        
+          //CHECK IF GENRATED LIST 2 IS EMPTY
+        
+        if(!h2){
+            t1->next=NULL;
+            return h1; 
+        }
+        
+        //BREAK BOTH THE LIST
+        
+            t1->next=NULL;
+        
+            t2->next=NULL;
+        
+        //CONNECT FIRST LIST TO THE SECOND LIST
+
+           t1->next=h2;
+        
+        //RETURN HEAD OF FIRST LIST
+        
+        return h1;
+    }
+};
